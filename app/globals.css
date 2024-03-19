@@ -2,32 +2,53 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
+button.remove {
+  color: red;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-  }
+.actions {
+  display: flex;
+  flex-direction: row;
+  gap: 0.5rem;
 }
 
-body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+input,
+button {
+  border: 1px solid #e3e3e3;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
 }
 
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
-  }
+.itemForm {
+  margin-top: 0.5rem;
+}
+
+.label {
+  font-size: 85%;
+  margin-bottom: 0.25rem;
+  display: block;
+}
+
+form.newItem {
+  display: flex;
+  flex-direction: row;
+  gap: 0.5rem;
+  padding: 0.5rem;
+  border: 1px solid lightgray;
+  margin-top: 0.5rem;
+}
+
+form.newItem > input {
+  flex-grow: 1;
+}
+
+.actionsCell {
+  vertical-align: top;
+}
+
+.field {
+  display: flex;
+  flex-direction: row;
+  gap: 0.5rem;
+  align-items: center;
 }
