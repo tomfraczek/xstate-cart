@@ -12,14 +12,25 @@ export const CartItem = ({ itemRef, onRemove }: CartItemProps) => {
   const { name, price, shipping } = state.context;
   return (
     <tr
+      className='flex items-center justify-between w-full border-b mb-2 pb-2'
       style={{
         opacity: state.matches('saving') ? 0.5 : 1,
       }}
     >
       <td width='100%'>
-        <strong>{name}</strong>
-        <strong>{price}</strong>
-        <strong>{shipping ? 'yes' : 'no'}</strong>
+        <div>
+          <p>
+            Name: <strong>{name}</strong>
+          </p>
+          <p>
+            Price: <strong>${price}</strong>
+          </p>
+          <p>
+            Shipping required:
+            <strong> {shipping ? 'yes' : 'no'}</strong>
+          </p>
+        </div>
+
         <form
           className='itemForm'
           hidden={!state.hasTag('form')}
@@ -30,15 +41,40 @@ export const CartItem = ({ itemRef, onRemove }: CartItemProps) => {
           }}
         >
           <label className='field' htmlFor='item.name'>
-            <div className='label'>Name</div>
-            <input
-              type='text'
-              id='item.name'
-              value={state.context.name}
-              onChange={(event) => {
-                itemRef.send({ type: 'SET_NAME', value: event.target.value });
-              }}
-            />
+            <div className='flex items-center'>
+              <label className='mr-2'>Name</label>
+              <input
+                type='text'
+                id='item.name'
+                value={name}
+                onChange={(event) => {
+                  itemRef.send({ type: 'SET_NAME', value: event.target.value });
+                }}
+              />
+            </div>
+            <div className='flex items-center'>
+              <label className='mr-2'>Price</label>
+              <input
+                type='number'
+                min={1}
+                id='item.price'
+                value={price}
+                onChange={(event) => {
+                  itemRef.send({ type: 'SET_PRICE', value: event.target.value });
+                }}
+              />
+            </div>
+            <div className='flex items-center'>
+              <label className='mr-2'>Shipping required?</label>
+              <input
+                type='checkbox'
+                id='item.shipping'
+                checked={shipping}
+                onChange={(event) => {
+                  itemRef.send({ type: 'SET_SHIPPING', value: event.target.checked });
+                }}
+              />
+            </div>
           </label>
         </form>
       </td>

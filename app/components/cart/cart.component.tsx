@@ -64,7 +64,7 @@ export const Cart = () => {
               <button>Add item</button>
             </form>
 
-            <table className='itemsTable'>
+            <table className='itemsTable w-full'>
               <tbody>
                 {itemsState.context.items.map((item, index) => {
                   return (
@@ -73,6 +73,12 @@ export const Cart = () => {
                 })}
               </tbody>
             </table>
+            {itemsState.context.items.length > 0 && (
+              <div className='flex flex-col items-end justify-end'>
+                <p>Next step: Shipping Address</p>
+                <button onClick={() => send({ type: 'address' })}>Next</button>
+              </div>
+            )}
           </div>
         );
       case 'addressed':
@@ -82,11 +88,5 @@ export const Cart = () => {
     }
   };
 
-  return (
-    <>
-      <button onClick={() => send({ type: 'address' })}>Next</button>
-
-      {renderComponent(current)}
-    </>
-  );
+  return <div className='w-full'>{renderComponent(current)}</div>;
 };
