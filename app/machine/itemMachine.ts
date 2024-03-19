@@ -14,6 +14,14 @@ export const itemMachine = setup({
           value: string;
         }
       | {
+          type: 'SET_PRICE';
+          value: string;
+        }
+      | {
+          type: 'SET_SHIPPING';
+          value: boolean;
+        }
+      | {
           type: 'SAVE';
         }
       | {
@@ -57,6 +65,12 @@ export const itemMachine = setup({
       on: {
         SET_NAME: {
           actions: assign({ name: ({ event }) => event.value }),
+        },
+        SET_PRICE: {
+          actions: assign({ price: ({ event }) => event.value }),
+        },
+        SET_SHIPPING: {
+          actions: assign({ shipping: ({ event }) => event.value }),
         },
         SAVE: {
           target: 'saving',
