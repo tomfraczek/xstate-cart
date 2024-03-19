@@ -50,7 +50,7 @@ export const CartForm = ({ itemsState, itemsSend, appSend }: CartFormProps) => {
 
   return (
     <div>
-      <form className='newItem mb-10' onSubmit={(event) => handleSubmit(event)}>
+      <form className='form mb-10' onSubmit={(event) => handleSubmit(event)}>
         <input
           value={itemsState.newItemName}
           onChange={(event) => itemsSend({ type: 'NEW_ITEM.CHANGE_NAME', name: event.target.value })}

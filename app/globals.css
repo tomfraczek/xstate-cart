@@ -29,7 +29,7 @@ button {
   display: block;
 }
 
-form.newItem {
+.form {
   display: flex;
   flex-direction: row;
   gap: 0.5rem;
@@ -38,7 +38,7 @@ form.newItem {
   margin-top: 0.5rem;
 }
 
-form.newItem > input {
+.form > input {
   flex-grow: 1;
 }
 
