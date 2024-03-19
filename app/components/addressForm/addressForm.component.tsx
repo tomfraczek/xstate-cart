@@ -1,5 +1,5 @@
-type AddressFormProps = {
-  addressSend: (
+export type AddressFormProps = {
+  shippingSend: (
     event:
       | {
           type: 'SET_COUNTRY';
@@ -13,17 +13,22 @@ type AddressFormProps = {
           type: 'SET_STREET';
           street: string;
         }
+      | {
+          type: 'SET_SHIPPING';
+          shipping: string;
+        }
   ) => void;
-  addressState: {
+  shippingState: {
     country: string;
     city: string;
     street: string;
+    shipping: string;
   };
   appSend: (event: { type: string }) => void;
 };
 
-export const AddressForm = ({ addressSend, addressState, appSend }: AddressFormProps) => {
-  const { country, city, street } = addressState;
+export const AddressForm = ({ shippingSend, shippingState, appSend }: AddressFormProps) => {
+  const { country, city, street } = shippingState;
   const displayCta = country !== '' && city !== '' && street !== '';
 
   return (
@@ -33,7 +38,8 @@ export const AddressForm = ({ addressSend, addressState, appSend }: AddressFormP
         <div className='flex items-center justify-center gap-5 w-full mb-4'>
           <select
             className='border p-1.5 w-full rounded'
-            onChange={(event) => addressSend({ type: 'SET_COUNTRY', country: event.target.value })}
+            value={country}
+            onChange={(event) => shippingSend({ type: 'SET_COUNTRY', country: event.target.value })}
           >
             <option value=''>Select country</option>
             <option value='pl'>Poland</option>
@@ -42,16 +48,16 @@ export const AddressForm = ({ addressSend, addressState, appSend }: AddressFormP
 
           <input
             className=' w-full'
-            value={addressState.city}
+            value={shippingState.city}
             type='text'
-            onChange={(event) => addressSend({ type: 'SET_CITY', city: event.target.value })}
+            onChange={(event) => shippingSend({ type: 'SET_CITY', city: event.target.value })}
             placeholder='City'
           />
           <input
             className=' w-full'
-            value={addressState.street}
+            value={shippingState.street}
             type='text'
-            onChange={(event) => addressSend({ type: 'SET_STREET', street: event.target.value })}
+            onChange={(event) => shippingSend({ type: 'SET_STREET', street: event.target.value })}
             placeholder='Street'
           />
         </div>
@@ -59,8 +65,12 @@ export const AddressForm = ({ addressSend, addressState, appSend }: AddressFormP
 
       {displayCta && (
         <div className='flex flex-col items-end justify-end'>
-          <p>Next step: Shipping Address</p>
-          <button onClick={() => appSend({ type: 'address' })}>Next</button>
+          <button
+            className='bg-blue-500 text-white border-transparent'
+            onClick={() => appSend({ type: 'select_shipping' })}
+          >
+            Continue
+          </button>
         </div>
       )}
     </div>

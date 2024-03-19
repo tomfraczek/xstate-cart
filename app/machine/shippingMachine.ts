@@ -1,11 +1,12 @@
 import { assign, fromPromise, setup } from 'xstate';
 
-export const addressMachine = setup({
+export const shippingMachine = setup({
   types: {
     context: {} as {
       country: string;
       city: string;
       street: string;
+      shipping: string;
     },
     events: {} as
       | {
@@ -19,11 +20,16 @@ export const addressMachine = setup({
       | {
           type: 'SET_STREET';
           street: string;
+        }
+      | {
+          type: 'SET_SHIPPING';
+          shipping: string;
         },
     input: {} as {
       country: string;
       city: string;
       street: string;
+      shipping: string;
     },
   },
   actors: {
@@ -39,6 +45,7 @@ export const addressMachine = setup({
     country: '',
     city: '',
     street: '',
+    shipping: '',
   },
   on: {
     SET_COUNTRY: {
@@ -54,6 +61,11 @@ export const addressMachine = setup({
     SET_STREET: {
       actions: assign({
         street: ({ event }) => event.street,
+      }),
+    },
+    SET_SHIPPING: {
+      actions: assign({
+        shipping: ({ event }) => event.shipping,
       }),
     },
   },

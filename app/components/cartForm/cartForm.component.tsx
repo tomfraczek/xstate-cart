@@ -83,8 +83,9 @@ export const CartForm = ({ itemsState, itemsSend, appSend }: CartFormProps) => {
       </table>
       {itemsState.items.length > 0 && (
         <div className='flex flex-col items-end justify-end'>
-          <p>Next step: Shipping Address</p>
-          <button onClick={() => appSend({ type: 'address' })}>Next</button>
+          <button className='bg-blue-500 text-white border-transparent' onClick={() => appSend({ type: 'address' })}>
+            Continue
+          </button>
         </div>
       )}
     </div>

@@ -5,19 +5,27 @@ import { useMachine } from '@xstate/react';
 import { appMachine } from '@/app/machine/appMachine';
 import { CartForm } from '@/app/components/cartForm';
 import { AddressForm } from '@/app/components/addressForm';
-import { addressMachine } from '@/app/machine/addressMachine';
+import { shippingMachine } from '@/app/machine/shippingMachine';
+import { useEffect } from 'react';
+import { Shipping } from '@/app/components/shipping';
 
 export const Start = () => {
   const [state, send] = useMachine(appMachine);
   const [itemsState, itemsSend] = useMachine(itemsMachine);
-  const [addressState, addressSend] = useMachine(addressMachine);
+  const [shippingState, shippingSend] = useMachine(shippingMachine);
+
+  useEffect(() => {
+    console.log(state.value);
+  }, [state]);
 
   const renderComponent = (state: any) => {
     switch (state.value) {
       case 'cart':
         return <CartForm itemsSend={itemsSend} itemsState={itemsState.context} appSend={send} />;
       case 'addressed':
-        return <AddressForm addressState={addressState.context} addressSend={addressSend} appSend={send} />;
+        return <AddressForm shippingState={shippingState.context} shippingSend={shippingSend} appSend={send} />;
+      case 'shipping_selected':
+        return <Shipping shippingState={shippingState.context} shippingSend={shippingSend} appSend={send} />;
       default:
         return null;
     }
