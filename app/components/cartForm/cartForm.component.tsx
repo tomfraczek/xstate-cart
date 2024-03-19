@@ -13,6 +13,9 @@ type CartFormProps = {
   ) => void;
   appSend: (event: { type: string }) => void;
   itemsState: {
+    newItemName: string;
+    newItemPrice: string;
+    newItemShipping: boolean;
     items: ActorRefFrom<typeof itemMachine>[];
   };
 };
