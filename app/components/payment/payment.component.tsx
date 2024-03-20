@@ -20,18 +20,17 @@ export const Payment = ({ shippingSend, shippingState, appSend }: PaymentFormPro
             onChange={(event) => shippingSend({ type: 'set.payment', payment: event.target.value })}
           >
             <option value=''>Select shipping method</option>
-            <option value='creditCaerd'>Credit/debit card payment</option>
-            <option value='transfer'>Bank transfert</option>
-            <option value='cod'>Cash on delivery</option>
+            <option value='Credit/debit card payment'>Credit/debit card payment</option>
+            <option value='Bank transfert'>Bank transfert</option>
+            <option value='Cash on delivery'>Cash on delivery</option>
           </select>
         </div>
       </form>
-
       <div className='flex  items-start justify-between'>
-        <div className='flex flex-col gap-2'>
-          <button className='' onClick={() => appSend({ type: 'address' })}>
-            Edit shipping address
-          </button>
+        <div className='flex gap-2'>
+          <button onClick={() => appSend({ type: 'address' })}>Change shipping address</button>
+          <button onClick={() => appSend({ type: 'skip_shipping' })}>Back</button>
+          <button onClick={() => appSend({ type: 'complete' })}>Skip</button>
         </div>
         {displayCta && (
           <button className='bg-blue-500 text-white border-transparent' onClick={() => appSend({ type: 'complete' })}>

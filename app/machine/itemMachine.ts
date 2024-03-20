@@ -1,40 +1,46 @@
 import { assign, fromPromise, setup } from 'xstate';
 
+export type ItemContext = {
+  prevName: string;
+  name: string;
+  price: string;
+  shipping: boolean;
+};
+
+export type IventEvent =
+  | {
+      type: 'set.name';
+      value: string;
+    }
+  | {
+      type: 'set.price';
+      value: string;
+    }
+  | {
+      type: 'set.shipping';
+      value: boolean;
+    }
+  | {
+      type: 'save';
+    }
+  | {
+      type: 'edit';
+    }
+  | {
+      type: 'cancel';
+    };
+
+export type ItemInput = {
+  name: string;
+  price: string;
+  shipping: boolean;
+};
+
 export const itemMachine = setup({
   types: {
-    context: {} as {
-      prevName: string;
-      name: string;
-      price: string;
-      shipping: boolean;
-    },
-    events: {} as
-      | {
-          type: 'set.name';
-          value: string;
-        }
-      | {
-          type: 'set.price';
-          value: string;
-        }
-      | {
-          type: 'set.shipping';
-          value: boolean;
-        }
-      | {
-          type: 'save';
-        }
-      | {
-          type: 'edit';
-        }
-      | {
-          type: 'cancel';
-        },
-    input: {} as {
-      name: string;
-      price: string;
-      shipping: boolean;
-    },
+    context: {} as ItemContext,
+    events: {} as IventEvent,
+    input: {} as ItemInput,
     tags: {} as 'read' | 'form' | 'saving',
   },
   actors: {

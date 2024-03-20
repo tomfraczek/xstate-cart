@@ -52,3 +52,7 @@ button {
   gap: 0.5rem;
   align-items: center;
 }
+
+/* .tableBody td:nth-child(even) {
+  background-color: #d6d0d0;
+} */

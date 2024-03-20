@@ -1,7 +1,7 @@
 'use client';
 import { useEffect } from 'react';
 import { itemsMachine } from '@/app/machine/itemsMachine';
-import { useMachine } from '@xstate/react';
+import { createActorContext, useMachine } from '@xstate/react';
 import { appMachine } from '@/app/machine/appMachine';
 import { CartForm } from '@/app/components/cartForm';
 import { AddressForm } from '@/app/components/addressForm';
@@ -14,24 +14,26 @@ export const Start = () => {
   const [state, send] = useMachine(appMachine);
   const [itemsState, itemsSend] = useMachine(itemsMachine);
   const [shippingState, shippingSend] = useMachine(shippingMachine);
+  console.log(state.value);
 
-  useEffect(() => {
-    console.log(state.value);
-  }, [state]);
+  const displayCartView = state.matches('cart');
+  const displayAddressView = state.matches('shipping_selected') || state.matches('shipping_skipped');
+  const displayPaymentView = state.matches('payment_selected') || state.matches('payment_skipped');
+  const displayCompletedView = state.matches('completed');
 
   return (
     <div className='w-full'>
-      {state.matches('cart') && <CartForm itemsSend={itemsSend} itemsState={itemsState.context} appSend={send} />}
+      {displayCartView && <CartForm itemsSend={itemsSend} itemsState={itemsState.context} appSend={send} />}
       {state.matches('addressed') && (
         <AddressForm shippingState={shippingState.context} shippingSend={shippingSend} appSend={send} />
       )}
-      {state.matches('shipping_selected') && (
+      {displayAddressView && (
         <Shipping shippingState={shippingState.context} shippingSend={shippingSend} appSend={send} />
       )}
-      {state.matches('payment_selected') && (
+      {displayPaymentView && (
         <Payment shippingState={shippingState.context} shippingSend={shippingSend} appSend={send} />
       )}
-      {state.matches('completed') && (
+      {displayCompletedView && (
         <Completed itemsState={itemsState.context} shippingState={shippingState.context} appSend={send} />
       )}
     </div>

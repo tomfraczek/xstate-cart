@@ -76,14 +76,20 @@ export const CartForm = ({ itemsState, itemsSend, appSend }: CartFormProps) => {
       </form>
 
       <table className='itemsTable w-full'>
-        <tbody>
+        <tbody className='tableBody'>
           {itemsState.items.map((item, index) => (
-            <CartItem key={item.id} itemRef={item} onRemove={() => itemsSend({ type: 'ITEM.REMOVE', index })} />
+            <CartItem
+              key={item.id}
+              index={index}
+              itemRef={item}
+              onRemove={() => itemsSend({ type: 'ITEM.REMOVE', index })}
+            />
           ))}
         </tbody>
       </table>
+
       {itemsState.items.length > 0 && (
-        <div className='flex flex-col items-end justify-end'>
+        <div className='flex flex-col items-end justify-end mt-6'>
           <button className='bg-blue-500 text-white border-transparent' onClick={() => appSend({ type: 'address' })}>
             Continue
           </button>

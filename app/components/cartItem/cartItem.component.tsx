@@ -14,7 +14,7 @@ export const CartItem = ({ itemRef, index, onRemove }: CartItemProps) => {
   return (
     <tr
       className={`${
-        index && (index + 1) % 2 === 0 ? 'bg-white' : 'bg-gray-100'
+        index && (index + 1) % 2 === 0 ? 'bg-gray-100' : 'bg-white'
       } flex items-baseline justify-between w-full border-b p-5`}
       style={{
         opacity: state.matches('saving') ? 0.5 : 1,

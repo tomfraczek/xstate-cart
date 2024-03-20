@@ -21,8 +21,8 @@ export const AddressForm = ({ shippingSend, shippingState, appSend }: AddressFor
             onChange={(event) => shippingSend({ type: 'set.country', country: event.target.value })}
           >
             <option value=''>Select country</option>
-            <option value='pl'>Poland</option>
-            <option value='usa'>United States</option>
+            <option value='Poland'>Poland</option>
+            <option value='United States'>United States</option>
           </select>
 
           <input
@@ -41,17 +41,21 @@ export const AddressForm = ({ shippingSend, shippingState, appSend }: AddressFor
           />
         </div>
       </form>
-
-      {displayCta && (
-        <div className='flex flex-col items-end justify-end'>
+      <div className='flex  items-start justify-between'>
+        <div className='flex gap-2'>
+          <button className='' onClick={() => appSend({ type: 'skip_shipping' })}>
+            Skip
+          </button>
+        </div>
+        {displayCta && (
           <button
             className='bg-blue-500 text-white border-transparent'
             onClick={() => appSend({ type: 'select_shipping' })}
           >
             Continue
           </button>
-        </div>
-      )}
+        )}
+      </div>
     </div>
   );
 };
