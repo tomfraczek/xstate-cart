@@ -81,6 +81,12 @@ export const appMachine = createMachine({
         },
       },
     },
-    completed: {},
+    completed: {
+      on: {
+        complete: {
+          target: 'cart',
+        },
+      },
+    },
   },
 });

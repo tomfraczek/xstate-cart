@@ -14,7 +14,6 @@ export const Start = () => {
   const [state, send] = useMachine(appMachine);
   const [itemsState, itemsSend] = useMachine(itemsMachine);
   const [shippingState, shippingSend] = useMachine(shippingMachine);
-  console.log(state.value);
 
   const displayCartView = state.matches('cart');
   const displayAddressView = state.matches('shipping_selected') || state.matches('shipping_skipped');
@@ -34,7 +33,12 @@ export const Start = () => {
         <Payment shippingState={shippingState.context} shippingSend={shippingSend} appSend={send} />
       )}
       {displayCompletedView && (
-        <Completed itemsState={itemsState.context} shippingState={shippingState.context} appSend={send} />
+        <Completed
+          itemsSend={itemsSend}
+          itemsState={itemsState.context}
+          shippingState={shippingState.context}
+          appSend={send}
+        />
       )}
     </div>
   );

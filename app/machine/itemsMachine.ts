@@ -9,11 +9,12 @@ export type ItemsContext = {
 };
 
 export type ItemsEvent =
-  | { type: 'ITEMS.ADD'; name: string; price: string; shipping: boolean }
-  | { type: 'NEW_ITEM.CHANGE_NAME'; name: string }
-  | { type: 'NEW_ITEM.CHANGE_PRICE'; price: string }
-  | { type: 'NEW_ITEM.CHANGE_SHIPPING'; shipping: boolean }
-  | { type: 'ITEM.REMOVE'; index: number };
+  | { type: 'items.add'; name: string; price: string; shipping: boolean }
+  | { type: 'new_item.change_name'; name: string }
+  | { type: 'new_item.change_price'; price: string }
+  | { type: 'new_item.change_shipping'; shipping: boolean }
+  | { type: 'item.remove'; index: number }
+  | { type: 'items.clear_state' };
 
 const makeId = () => Math.random().toString(36).substring(7);
 
@@ -30,22 +31,22 @@ export const itemsMachine = createMachine({
     items: [],
   },
   on: {
-    'NEW_ITEM.CHANGE_NAME': {
+    'new_item.change_name': {
       actions: assign({
         newItemName: ({ event }) => event.name,
       }),
     },
-    'NEW_ITEM.CHANGE_PRICE': {
+    'new_item.change_price': {
       actions: assign({
         newItemPrice: ({ event }) => event.price,
       }),
     },
-    'NEW_ITEM.CHANGE_SHIPPING': {
+    'new_item.change_shipping': {
       actions: assign({
         newItemShipping: ({ event }) => event.shipping,
       }),
     },
-    'ITEMS.ADD': {
+    'items.add': {
       guard: ({ event }) => event.name.trim().length > 0,
       actions: assign({
         items: ({ context, spawn }) =>
@@ -64,7 +65,7 @@ export const itemsMachine = createMachine({
         newItemShipping: false,
       }),
     },
-    'ITEM.REMOVE': {
+    'item.remove': {
       actions: [
         // Stop the friend actor to unsubscribe
         stopChild(({ context, event }) => context.items[event.index]),
@@ -73,6 +74,14 @@ export const itemsMachine = createMachine({
           items: ({ context, event }) => context.items.filter((_, index) => index !== event.index),
         }),
       ],
+    },
+    'items.clear_state': {
+      actions: assign({
+        newItemName: '',
+        newItemPrice: '',
+        newItemShipping: false,
+        items: [],
+      }),
     },
   },
 });

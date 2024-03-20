@@ -1,16 +1,10 @@
 import { itemMachine } from '@/app/machine/itemMachine';
 import { ActorRefFrom } from 'xstate';
 import { CartItem } from '@/app/components/cartItem';
+import { ItemsEvent } from '@/app/machine/itemsMachine';
 
 type CartFormProps = {
-  itemsSend: (
-    event:
-      | { type: 'ITEMS.ADD'; name: string; price: string; shipping: boolean }
-      | { type: 'NEW_ITEM.CHANGE_NAME'; name: string }
-      | { type: 'NEW_ITEM.CHANGE_PRICE'; price: string }
-      | { type: 'NEW_ITEM.CHANGE_SHIPPING'; shipping: boolean }
-      | { type: 'ITEM.REMOVE'; index: number }
-  ) => void;
+  itemsSend: (event: ItemsEvent) => void;
   appSend: (event: { type: string }) => void;
   itemsState: {
     newItemName: string;
@@ -41,7 +35,7 @@ export const CartForm = ({ itemsState, itemsSend, appSend }: CartFormProps) => {
 
     // All validations passed, proceed with adding the item
     itemsSend({
-      type: 'ITEMS.ADD',
+      type: 'items.add',
       name: newItemName,
       price: parsedPrice.toString(),
       shipping: newItemShipping,
@@ -53,7 +47,7 @@ export const CartForm = ({ itemsState, itemsSend, appSend }: CartFormProps) => {
       <form className='form mb-10' onSubmit={(event) => handleSubmit(event)}>
         <input
           value={itemsState.newItemName}
-          onChange={(event) => itemsSend({ type: 'NEW_ITEM.CHANGE_NAME', name: event.target.value })}
+          onChange={(event) => itemsSend({ type: 'new_item.change_name', name: event.target.value })}
           placeholder='Item name'
         />
         <input
@@ -61,7 +55,7 @@ export const CartForm = ({ itemsState, itemsSend, appSend }: CartFormProps) => {
           type='number'
           step='any'
           min='1'
-          onChange={(event) => itemsSend({ type: 'NEW_ITEM.CHANGE_PRICE', price: event.target.value })}
+          onChange={(event) => itemsSend({ type: 'new_item.change_price', price: event.target.value })}
           placeholder='Item price'
         />
         <div className='flex items-center'>
@@ -69,7 +63,7 @@ export const CartForm = ({ itemsState, itemsSend, appSend }: CartFormProps) => {
           <input
             checked={itemsState.newItemShipping}
             type='checkbox'
-            onChange={(event) => itemsSend({ type: 'NEW_ITEM.CHANGE_SHIPPING', shipping: event.target.checked })}
+            onChange={(event) => itemsSend({ type: 'new_item.change_shipping', shipping: event.target.checked })}
           />
         </div>
         <button>Add item</button>
@@ -82,7 +76,7 @@ export const CartForm = ({ itemsState, itemsSend, appSend }: CartFormProps) => {
               key={item.id}
               index={index}
               itemRef={item}
-              onRemove={() => itemsSend({ type: 'ITEM.REMOVE', index })}
+              onRemove={() => itemsSend({ type: 'item.remove', index })}
             />
           ))}
         </tbody>

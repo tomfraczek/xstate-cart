@@ -1,16 +1,20 @@
 'use client';
 import { ItemContext } from '@/app/machine/itemMachine';
-import { ItemsContext } from '@/app/machine/itemsMachine';
+import { ItemsContext, ItemsEvent } from '@/app/machine/itemsMachine';
 import { ContextType } from '@/app/machine/shippingMachine';
 
 import { CartItem } from '@/app/components/cartItem';
+import { useState } from 'react';
 
 type PaymentFormProps = {
   shippingState: ContextType;
   itemsState: ItemsContext;
   appSend: (event: { type: string }) => void;
+  itemsSend: (event: ItemsEvent) => void;
 };
-export const Completed = ({ itemsState, shippingState, appSend }: PaymentFormProps) => {
+export const Completed = ({ itemsState, shippingState, appSend, itemsSend }: PaymentFormProps) => {
+  const [sent, setSent] = useState(false);
+  const [loading, setLoading] = useState(false);
   const { city, country, payment, shipping, street } = shippingState;
   const displayAddress = city !== '' && country !== '' && street;
   const displayPayment = payment !== '';
@@ -22,7 +26,12 @@ export const Completed = ({ itemsState, shippingState, appSend }: PaymentFormPro
     elements.push(item.getSnapshot().context);
   });
 
+  const totalPrice = elements.reduce((acc, item) => acc + parseInt(item.price), 0);
+
   const handleSubmit = () => {
+    setLoading(true);
+    setSent(false);
+
     const payload = {
       city,
       country,
@@ -30,6 +39,7 @@ export const Completed = ({ itemsState, shippingState, appSend }: PaymentFormPro
       shipping,
       street,
       elements,
+      totalPrice,
     };
 
     const headers = new Headers();
@@ -49,18 +59,20 @@ export const Completed = ({ itemsState, shippingState, appSend }: PaymentFormPro
         }
         return response.json();
       })
-      .then((data) => {
-        console.log('Success:', data);
-        // Handle success
+      .then(() => {
+        setLoading(false);
+        setSent(true);
+        itemsSend({ type: 'items.clear_state' });
       })
       .catch((error) => {
+        setLoading(false);
         console.error('Error:', error);
         // Handle error
       });
   };
 
   return (
-    <div className='mb-32'>
+    <div className='mb-32 relative'>
       <h2 className='text-xl text-center mb-4'>Cart Summary</h2>
       <table className='itemsTable w-full'>
         <tbody>
@@ -69,6 +81,12 @@ export const Completed = ({ itemsState, shippingState, appSend }: PaymentFormPro
           ))}
         </tbody>
       </table>
+
+      <div className='w-full flex justify-end pr-5'>
+        <p>
+          Total price: <strong>${totalPrice}</strong>
+        </p>
+      </div>
       {displayAddress && (
         <>
           <h2 className='text-xl text-center mb-4 mt-14'>Address Summary</h2>
@@ -136,11 +154,32 @@ export const Completed = ({ itemsState, shippingState, appSend }: PaymentFormPro
           </table>
         </>
       )}
+
       <div className='flex flex-col items-end justify-end mt-16'>
-        <button onClick={handleSubmit} className='bg-blue-500 text-white border-transparent'>
-          Submit the order
-        </button>
+        {loading ? (
+          <div
+            className='mr-10 animate-spin inline-block w-10 h-10 border-[3px] border-current border-t-transparent text-gray-400 rounded-full'
+            role='status'
+            aria-label='loading'
+          >
+            <span className='sr-only'>Loading...</span>
+          </div>
+        ) : (
+          <button onClick={handleSubmit} className='bg-blue-500 text-white border-transparent'>
+            Submit the order
+          </button>
+        )}
       </div>
+
+      {!sent && (
+        <div className='absolute inset-0 p-32 border rounded-lg border-gray-400 bg-white flex flex-col items-center justify-center'>
+          <h2 className='text-green-600 text-3xl'>Done!</h2>
+          <h2 className='text-green-600 text-2xl'>The order has been succesfully added.</h2>
+          <button className='mt-4' onClick={() => appSend({ type: 'complete' })}>
+            Add new order
+          </button>
+        </div>
+      )}
     </div>
   );
 };
