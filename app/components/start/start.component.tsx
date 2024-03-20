@@ -19,10 +19,11 @@ export const Start = () => {
   const [progressState, progressSend] = useMachine(progressBarMachine);
 
   const displayCartView = state.matches('cart');
-  const displayAddressView = state.matches('shipping_selected') || state.matches('shipping_skipped');
+  const displayAddressView = state.matches('addressed');
+  const displayShippingView = state.matches('shipping_selected') || state.matches('shipping_skipped');
   const displayPaymentView = state.matches('payment_selected') || state.matches('payment_skipped');
   const displayCompletedView = state.matches('completed');
-  const progress = progressState.context.progress;
+  const { progress } = progressState.context;
 
   return (
     <div className='w-full'>
@@ -30,7 +31,7 @@ export const Start = () => {
       {displayCartView && (
         <CartForm progressSend={progressSend} itemsSend={itemsSend} itemsState={itemsState.context} appSend={send} />
       )}
-      {state.matches('addressed') && (
+      {displayAddressView && (
         <AddressForm
           progressSend={progressSend}
           shippingState={shippingState.context}
@@ -38,7 +39,7 @@ export const Start = () => {
           appSend={send}
         />
       )}
-      {displayAddressView && (
+      {displayShippingView && (
         <Shipping
           progressSend={progressSend}
           shippingState={shippingState.context}

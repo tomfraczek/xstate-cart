@@ -45,11 +45,17 @@ export const Payment = ({ shippingSend, shippingState, appSend, progressSend }: 
           </select>
         </div>
       </form>
-      <div className='flex  items-start justify-between'>
-        <div className='flex gap-2'>
-          <button onClick={handleEditShipping}>Change shipping address</button>
-          <button onClick={handleBack}>Back</button>
-          <button onClick={handleSkip}>Skip</button>
+      <div className='flex items-start justify-between'>
+        <div className='flex gap-2 flex-col'>
+          <button className='bg-yellow-400  border-transparent' onClick={handleBack}>
+            Back
+          </button>
+          <button className='bg-orange-500 text-white border-transparent' onClick={handleEditShipping}>
+            Change shipping address
+          </button>
+          <button className='bg-red-600 text-white border-transparent' onClick={handleSkip}>
+            Skip
+          </button>
         </div>
         {displayCta && (
           <button className='bg-blue-500 text-white border-transparent' onClick={handleContinue}>

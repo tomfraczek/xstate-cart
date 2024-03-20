@@ -50,11 +50,11 @@ export const Shipping = ({ shippingSend, shippingState, appSend, progressSend }:
         </div>
       </form>
       <div className='flex  items-start justify-between'>
-        <div className='flex gap-2'>
-          <button className='' onClick={handleEditShipping}>
+        <div className='flex gap-2 flex-col'>
+          <button className='bg-orange-500 text-white border-transparent' onClick={handleEditShipping}>
             Change shipping address
           </button>
-          <button className='' onClick={handleSkip}>
+          <button className='bg-red-600 text-white border-transparent' onClick={handleSkip}>
             Skip
           </button>
         </div>
