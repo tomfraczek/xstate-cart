@@ -37,7 +37,7 @@ export const CartItem = ({ itemRef, onRemove }: CartItemProps) => {
           onSubmit={(event) => {
             event.preventDefault();
 
-            itemRef.send({ type: 'SAVE' });
+            itemRef.send({ type: 'save' });
           }}
         >
           <label className='field' htmlFor='item.name'>
@@ -48,7 +48,7 @@ export const CartItem = ({ itemRef, onRemove }: CartItemProps) => {
                 id='item.name'
                 value={name}
                 onChange={(event) => {
-                  itemRef.send({ type: 'SET_NAME', value: event.target.value });
+                  itemRef.send({ type: 'set.name', value: event.target.value });
                 }}
               />
             </div>
@@ -60,7 +60,7 @@ export const CartItem = ({ itemRef, onRemove }: CartItemProps) => {
                 id='item.price'
                 value={price}
                 onChange={(event) => {
-                  itemRef.send({ type: 'SET_PRICE', value: event.target.value });
+                  itemRef.send({ type: 'set.price', value: event.target.value });
                 }}
               />
             </div>
@@ -71,7 +71,7 @@ export const CartItem = ({ itemRef, onRemove }: CartItemProps) => {
                 id='item.shipping'
                 checked={shipping}
                 onChange={(event) => {
-                  itemRef.send({ type: 'SET_SHIPPING', value: event.target.checked });
+                  itemRef.send({ type: 'set.shipping', value: event.target.checked });
                 }}
               />
             </div>
@@ -85,19 +85,19 @@ export const CartItem = ({ itemRef, onRemove }: CartItemProps) => {
               <button
                 disabled={state.hasTag('saving')}
                 onClick={() => {
-                  itemRef.send({ type: 'SAVE' });
+                  itemRef.send({ type: 'save' });
                 }}
               >
                 Save
               </button>
-              <button onClick={() => itemRef.send({ type: 'CANCEL' })} type='button'>
+              <button onClick={() => itemRef.send({ type: 'cancel' })} type='button'>
                 Cancel
               </button>
             </>
           )}
           {state.hasTag('read') && (
             <>
-              <button onClick={() => itemRef.send({ type: 'EDIT' })}>Edit</button>
+              <button onClick={() => itemRef.send({ type: 'edit' })}>Edit</button>
               <button className='remove' onClick={onRemove}>
                 Remove
               </button>
