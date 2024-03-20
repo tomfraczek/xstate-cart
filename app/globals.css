@@ -52,7 +52,17 @@ button {
   gap: 0.5rem;
   align-items: center;
 }
-
-/* .tableBody td:nth-child(even) {
-  background-color: #d6d0d0;
-} */
+.progress-bar {
+  width: 100%;
+  height: 5px;
+  background-color: #ddd;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+}
+.progress {
+  height: 100%;
+  background-color: #0070f3;
+  transition: width 0.3s ease;
+}
