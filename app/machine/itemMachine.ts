@@ -35,6 +35,7 @@ export const itemMachine = setup({
       price: string;
       shipping: boolean;
     },
+    tags: {} as 'read' | 'form' | 'saving',
   },
   actors: {
     saveUser: fromPromise(async () => {
@@ -54,6 +55,7 @@ export const itemMachine = setup({
   }),
   states: {
     reading: {
+      tags: 'read',
       on: {
         edit: 'editing',
       },
@@ -76,6 +78,7 @@ export const itemMachine = setup({
       },
     },
     saving: {
+      tags: ['form', 'saving'],
       invoke: {
         src: 'saveUser',
         onDone: {

@@ -59,6 +59,7 @@ export const CartForm = ({ itemsState, itemsSend, appSend }: CartFormProps) => {
         <input
           value={itemsState.newItemPrice}
           type='number'
+          step='any'
           min='1'
           onChange={(event) => itemsSend({ type: 'NEW_ITEM.CHANGE_PRICE', price: event.target.value })}
           placeholder='Item price'
@@ -76,9 +77,9 @@ export const CartForm = ({ itemsState, itemsSend, appSend }: CartFormProps) => {
 
       <table className='itemsTable w-full'>
         <tbody>
-          {itemsState.items.map((item, index) => {
-            return <CartItem key={item.id} itemRef={item} onRemove={() => itemsSend({ type: 'ITEM.REMOVE', index })} />;
-          })}
+          {itemsState.items.map((item, index) => (
+            <CartItem key={item.id} itemRef={item} onRemove={() => itemsSend({ type: 'ITEM.REMOVE', index })} />
+          ))}
         </tbody>
       </table>
       {itemsState.items.length > 0 && (

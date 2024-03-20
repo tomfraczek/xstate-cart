@@ -4,27 +4,32 @@ import { useSelector } from '@xstate/react';
 
 type CartItemProps = {
   itemRef: ActorRefFrom<typeof itemMachine>;
-  onRemove: () => void;
+  index?: number;
+  onRemove?: () => void;
 };
 
-export const CartItem = ({ itemRef, onRemove }: CartItemProps) => {
+export const CartItem = ({ itemRef, index, onRemove }: CartItemProps) => {
   const state = useSelector(itemRef, (s) => s);
   const { name, price, shipping } = state.context;
   return (
     <tr
-      className='flex items-center justify-between w-full border-b mb-2 pb-2'
+      className={`${
+        index && (index + 1) % 2 === 0 ? 'bg-white' : 'bg-gray-100'
+      } flex items-baseline justify-between w-full border-b p-5`}
       style={{
         opacity: state.matches('saving') ? 0.5 : 1,
       }}
     >
       <td width='100%'>
         <div>
-          <p>
-            Name: <strong>{name}</strong>
-          </p>
-          <p>
-            Price: <strong>${price}</strong>
-          </p>
+          <div className='flex items-center justify-between'>
+            <p>
+              Name: <strong>{name}</strong>
+            </p>
+            <p>
+              Price: <strong>${price}</strong>
+            </p>
+          </div>
           <p>
             Shipping required:
             <strong> {shipping ? 'yes' : 'no'}</strong>
@@ -78,9 +83,9 @@ export const CartItem = ({ itemRef, onRemove }: CartItemProps) => {
           </label>
         </form>
       </td>
-      <td className='actionsCell'>
-        <div className='actions'>
-          {state.hasTag('form') && (
+      {state.hasTag('form') && (
+        <td className='actionsCell ml-4'>
+          <div className='actions'>
             <>
               <button
                 disabled={state.hasTag('saving')}
@@ -94,17 +99,17 @@ export const CartItem = ({ itemRef, onRemove }: CartItemProps) => {
                 Cancel
               </button>
             </>
-          )}
-          {state.hasTag('read') && (
-            <>
-              <button onClick={() => itemRef.send({ type: 'edit' })}>Edit</button>
-              <button className='remove' onClick={onRemove}>
-                Remove
-              </button>
-            </>
-          )}
-        </div>
-      </td>
+            {state.hasTag('read') && onRemove && (
+              <>
+                <button onClick={() => itemRef.send({ type: 'edit' })}>Edit</button>
+                <button className='remove' onClick={onRemove}>
+                  Remove
+                </button>
+              </>
+            )}
+          </div>
+        </td>
+      )}
     </tr>
   );
 };
