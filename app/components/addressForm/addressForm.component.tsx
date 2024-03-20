@@ -1,15 +1,26 @@
+import { ProgressEvents } from '@/app/machine/progressMachine';
 import { ContextType, EventType } from '@/app/machine/shippingMachine';
 
 type AddressFormProps = {
   shippingSend: (event: EventType) => void;
   shippingState: ContextType;
   appSend: (event: { type: string }) => void;
+  progressSend: (event: ProgressEvents) => void;
 };
 
-export const AddressForm = ({ shippingSend, shippingState, appSend }: AddressFormProps) => {
+export const AddressForm = ({ shippingSend, shippingState, appSend, progressSend }: AddressFormProps) => {
   const { country, city, street } = shippingState;
   const displayCta = country !== '' && city !== '' && street !== '';
 
+  const handleContinue = () => {
+    progressSend({ type: 'progress.update', value: 50 });
+    appSend({ type: 'select_shipping' });
+  };
+
+  const handleSkip = () => {
+    progressSend({ type: 'progress.update', value: 50 });
+    appSend({ type: 'skip_shipping' });
+  };
   return (
     <div>
       <h2 className='text-xl text-center mb-4'>Shipping Address</h2>
@@ -43,15 +54,12 @@ export const AddressForm = ({ shippingSend, shippingState, appSend }: AddressFor
       </form>
       <div className='flex  items-start justify-between'>
         <div className='flex gap-2'>
-          <button className='' onClick={() => appSend({ type: 'skip_shipping' })}>
+          <button className='' onClick={handleSkip}>
             Skip
           </button>
         </div>
         {displayCta && (
-          <button
-            className='bg-blue-500 text-white border-transparent'
-            onClick={() => appSend({ type: 'select_shipping' })}
-          >
+          <button className='bg-blue-500 text-white border-transparent' onClick={handleContinue}>
             Continue
           </button>
         )}

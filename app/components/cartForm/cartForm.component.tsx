@@ -2,10 +2,12 @@ import { itemMachine } from '@/app/machine/itemMachine';
 import { ActorRefFrom } from 'xstate';
 import { CartItem } from '@/app/components/cartItem';
 import { ItemsEvent } from '@/app/machine/itemsMachine';
+import { ProgressEvents } from '@/app/machine/progressMachine';
 
 type CartFormProps = {
   itemsSend: (event: ItemsEvent) => void;
   appSend: (event: { type: string }) => void;
+  progressSend: (event: ProgressEvents) => void;
   itemsState: {
     newItemName: string;
     newItemPrice: string;
@@ -14,7 +16,7 @@ type CartFormProps = {
   };
 };
 
-export const CartForm = ({ itemsState, itemsSend, appSend }: CartFormProps) => {
+export const CartForm = ({ itemsState, itemsSend, appSend, progressSend }: CartFormProps) => {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
@@ -40,6 +42,11 @@ export const CartForm = ({ itemsState, itemsSend, appSend }: CartFormProps) => {
       price: parsedPrice.toString(),
       shipping: newItemShipping,
     });
+  };
+
+  const handleContinue = () => {
+    progressSend({ type: 'progress.update', value: 25 });
+    appSend({ type: 'address' });
   };
 
   return (
@@ -84,7 +91,7 @@ export const CartForm = ({ itemsState, itemsSend, appSend }: CartFormProps) => {
 
       {itemsState.items.length > 0 && (
         <div className='flex flex-col items-end justify-end mt-6'>
-          <button className='bg-blue-500 text-white border-transparent' onClick={() => appSend({ type: 'address' })}>
+          <button className='bg-blue-500 text-white border-transparent' onClick={handleContinue}>
             Continue
           </button>
         </div>

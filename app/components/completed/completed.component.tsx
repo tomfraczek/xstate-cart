@@ -5,16 +5,19 @@ import { ContextType } from '@/app/machine/shippingMachine';
 
 import { CartItem } from '@/app/components/cartItem';
 import { useState } from 'react';
+import { ProgressEvents } from '@/app/machine/progressMachine';
 
 type PaymentFormProps = {
   shippingState: ContextType;
   itemsState: ItemsContext;
   appSend: (event: { type: string }) => void;
   itemsSend: (event: ItemsEvent) => void;
+  progressSend: (event: ProgressEvents) => void;
 };
-export const Completed = ({ itemsState, shippingState, appSend, itemsSend }: PaymentFormProps) => {
+export const Completed = ({ itemsState, shippingState, appSend, itemsSend, progressSend }: PaymentFormProps) => {
   const [sent, setSent] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(false);
   const { city, country, payment, shipping, street } = shippingState;
   const displayAddress = city !== '' && country !== '' && street;
   const displayPayment = payment !== '';
@@ -31,6 +34,7 @@ export const Completed = ({ itemsState, shippingState, appSend, itemsSend }: Pay
   const handleSubmit = () => {
     setLoading(true);
     setSent(false);
+    setError(false);
 
     const payload = {
       city,
@@ -62,13 +66,20 @@ export const Completed = ({ itemsState, shippingState, appSend, itemsSend }: Pay
       .then(() => {
         setLoading(false);
         setSent(true);
+        progressSend({ type: 'progress.update', value: 0 });
         itemsSend({ type: 'items.clear_state' });
       })
       .catch((error) => {
         setLoading(false);
+        setError(true);
         console.error('Error:', error);
         // Handle error
       });
+  };
+
+  const handleAddNewOrder = () => {
+    progressSend({ type: 'progress.update', value: 0 });
+    appSend({ type: 'complete' });
   };
 
   return (
@@ -171,11 +182,13 @@ export const Completed = ({ itemsState, shippingState, appSend, itemsSend }: Pay
         )}
       </div>
 
-      {!sent && (
+      {sent && (
         <div className='absolute inset-0 p-32 border rounded-lg border-gray-400 bg-white flex flex-col items-center justify-center'>
-          <h2 className='text-green-600 text-3xl'>Done!</h2>
-          <h2 className='text-green-600 text-2xl'>The order has been succesfully added.</h2>
-          <button className='mt-4' onClick={() => appSend({ type: 'complete' })}>
+          <h2 className={`${error ? 'text-red-600' : 'text-green-600'} text-3xl`}>Done!</h2>
+          <h2 className={`${error ? 'text-red-600' : 'text-green-600'} text-2xl`}>
+            {error ? 'But something went wrong! Try again. :(' : 'The order has been succesfully added.'}
+          </h2>
+          <button className='mt-4' onClick={handleAddNewOrder}>
             Add new order
           </button>
         </div>
