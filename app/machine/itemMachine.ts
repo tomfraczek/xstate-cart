@@ -10,25 +10,25 @@ export const itemMachine = setup({
     },
     events: {} as
       | {
-          type: 'SET_NAME';
+          type: 'set.name';
           value: string;
         }
       | {
-          type: 'SET_PRICE';
+          type: 'set.price';
           value: string;
         }
       | {
-          type: 'SET_SHIPPING';
+          type: 'set.shipping';
           value: boolean;
         }
       | {
-          type: 'SAVE';
+          type: 'save';
         }
       | {
-          type: 'EDIT';
+          type: 'edit';
         }
       | {
-          type: 'CANCEL';
+          type: 'cancel';
         },
     input: {} as {
       name: string;
@@ -57,22 +57,22 @@ export const itemMachine = setup({
     reading: {
       tags: 'read',
       on: {
-        EDIT: 'editing',
+        edit: 'editing',
       },
     },
     editing: {
       tags: 'form',
       on: {
-        SET_NAME: {
+        'set.name': {
           actions: assign({ name: ({ event }) => event.value }),
         },
-        SET_PRICE: {
+        'set.price': {
           actions: assign({ price: ({ event }) => event.value }),
         },
-        SET_SHIPPING: {
+        'set.shipping': {
           actions: assign({ shipping: ({ event }) => event.value }),
         },
-        SAVE: {
+        save: {
           target: 'saving',
         },
       },
@@ -89,7 +89,7 @@ export const itemMachine = setup({
     },
   },
   on: {
-    CANCEL: {
+    cancel: {
       actions: assign({ name: ({ context }) => context.prevName }),
       target: '.reading',
     },

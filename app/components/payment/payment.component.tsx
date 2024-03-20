@@ -1,11 +1,11 @@
 import { AddressFormProps } from '@/app/components/addressForm/addressForm.component';
 
-export const Shipping = ({ shippingSend, shippingState, appSend }: AddressFormProps) => {
+export const Payment = ({ shippingSend, shippingState, appSend }: AddressFormProps) => {
   const { shipping } = shippingState;
   const displayCta = shipping !== '';
   return (
     <div>
-      <h2 className='text-xl text-center mb-4'>Shipping Method</h2>
+      <h2 className='text-xl text-center mb-4'>Payment Method</h2>
       <form>
         <div className='flex items-center justify-center gap-5 w-full mb-4'>
           <select
@@ -14,8 +14,9 @@ export const Shipping = ({ shippingSend, shippingState, appSend }: AddressFormPr
             onChange={(event) => shippingSend({ type: 'set.shipping', shipping: event.target.value })}
           >
             <option value=''>Select shipping method</option>
-            <option value='americanExpress'>American Express</option>
-            <option value='inPost'>InPost</option>
+            <option value='creditCaerd'>Credit/debit card payment</option>
+            <option value='transfer'>Bank transfert</option>
+            <option value='cod'>Cash on delivery</option>
           </select>
         </div>
       </form>

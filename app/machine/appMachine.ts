@@ -25,7 +25,7 @@ export const appMachine = createMachine({
     },
     shipping_selected: {
       on: {
-        select_paymen: {
+        select_payment: {
           target: 'payment_selected',
         },
         address: {

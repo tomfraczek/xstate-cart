@@ -2,19 +2,19 @@ export type AddressFormProps = {
   shippingSend: (
     event:
       | {
-          type: 'SET_COUNTRY';
+          type: 'set.country';
           country: string;
         }
       | {
-          type: 'SET_CITY';
+          type: 'set.city';
           city: string;
         }
       | {
-          type: 'SET_STREET';
+          type: 'set.street';
           street: string;
         }
       | {
-          type: 'SET_SHIPPING';
+          type: 'set.shipping';
           shipping: string;
         }
   ) => void;
@@ -39,7 +39,7 @@ export const AddressForm = ({ shippingSend, shippingState, appSend }: AddressFor
           <select
             className='border p-1.5 w-full rounded'
             value={country}
-            onChange={(event) => shippingSend({ type: 'SET_COUNTRY', country: event.target.value })}
+            onChange={(event) => shippingSend({ type: 'set.country', country: event.target.value })}
           >
             <option value=''>Select country</option>
             <option value='pl'>Poland</option>
@@ -50,14 +50,14 @@ export const AddressForm = ({ shippingSend, shippingState, appSend }: AddressFor
             className=' w-full'
             value={shippingState.city}
             type='text'
-            onChange={(event) => shippingSend({ type: 'SET_CITY', city: event.target.value })}
+            onChange={(event) => shippingSend({ type: 'set.city', city: event.target.value })}
             placeholder='City'
           />
           <input
             className=' w-full'
             value={shippingState.street}
             type='text'
-            onChange={(event) => shippingSend({ type: 'SET_STREET', street: event.target.value })}
+            onChange={(event) => shippingSend({ type: 'set.street', street: event.target.value })}
             placeholder='Street'
           />
         </div>

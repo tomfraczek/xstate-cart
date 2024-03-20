@@ -10,19 +10,19 @@ export const shippingMachine = setup({
     },
     events: {} as
       | {
-          type: 'SET_COUNTRY';
+          type: 'set.country';
           country: string;
         }
       | {
-          type: 'SET_CITY';
+          type: 'set.city';
           city: string;
         }
       | {
-          type: 'SET_STREET';
+          type: 'set.street';
           street: string;
         }
       | {
-          type: 'SET_SHIPPING';
+          type: 'set.shipping';
           shipping: string;
         },
     input: {} as {
@@ -48,22 +48,22 @@ export const shippingMachine = setup({
     shipping: '',
   },
   on: {
-    SET_COUNTRY: {
+    'set.country': {
       actions: assign({
         country: ({ event }) => event.country,
       }),
     },
-    SET_CITY: {
+    'set.city': {
       actions: assign({
         city: ({ event }) => event.city,
       }),
     },
-    SET_STREET: {
+    'set.street': {
       actions: assign({
         street: ({ event }) => event.street,
       }),
     },
-    SET_SHIPPING: {
+    'set.shipping': {
       actions: assign({
         shipping: ({ event }) => event.shipping,
       }),
