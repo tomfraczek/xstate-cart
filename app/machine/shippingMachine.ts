@@ -1,36 +1,40 @@
 import { assign, fromPromise, setup } from 'xstate';
 
+export type ContextType = {
+  country: string;
+  city: string;
+  street: string;
+  shipping: string;
+  payment: string;
+};
+
+export type EventType =
+  | {
+      type: 'set.country';
+      country: string;
+    }
+  | {
+      type: 'set.city';
+      city: string;
+    }
+  | {
+      type: 'set.street';
+      street: string;
+    }
+  | {
+      type: 'set.shipping';
+      shipping: string;
+    }
+  | {
+      type: 'set.payment';
+      payment: string;
+    };
+
 export const shippingMachine = setup({
   types: {
-    context: {} as {
-      country: string;
-      city: string;
-      street: string;
-      shipping: string;
-    },
-    events: {} as
-      | {
-          type: 'set.country';
-          country: string;
-        }
-      | {
-          type: 'set.city';
-          city: string;
-        }
-      | {
-          type: 'set.street';
-          street: string;
-        }
-      | {
-          type: 'set.shipping';
-          shipping: string;
-        },
-    input: {} as {
-      country: string;
-      city: string;
-      street: string;
-      shipping: string;
-    },
+    context: {} as ContextType,
+    events: {} as EventType,
+    input: {} as ContextType,
   },
   actors: {
     saveUser: fromPromise(async () => {
@@ -46,6 +50,7 @@ export const shippingMachine = setup({
     city: '',
     street: '',
     shipping: '',
+    payment: '',
   },
   on: {
     'set.country': {
@@ -66,6 +71,11 @@ export const shippingMachine = setup({
     'set.shipping': {
       actions: assign({
         shipping: ({ event }) => event.shipping,
+      }),
+    },
+    'set.payment': {
+      actions: assign({
+        payment: ({ event }) => event.payment,
       }),
     },
   },

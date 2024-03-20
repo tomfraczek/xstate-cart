@@ -1,29 +1,8 @@
-export type AddressFormProps = {
-  shippingSend: (
-    event:
-      | {
-          type: 'set.country';
-          country: string;
-        }
-      | {
-          type: 'set.city';
-          city: string;
-        }
-      | {
-          type: 'set.street';
-          street: string;
-        }
-      | {
-          type: 'set.shipping';
-          shipping: string;
-        }
-  ) => void;
-  shippingState: {
-    country: string;
-    city: string;
-    street: string;
-    shipping: string;
-  };
+import { ContextType, EventType } from '@/app/machine/shippingMachine';
+
+type AddressFormProps = {
+  shippingSend: (event: EventType) => void;
+  shippingState: ContextType;
   appSend: (event: { type: string }) => void;
 };
 

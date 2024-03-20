@@ -28,7 +28,10 @@ export const Start = () => {
       {state.matches('shipping_selected') && (
         <Shipping shippingState={shippingState.context} shippingSend={shippingSend} appSend={send} />
       )}
-      {state.matches('payment_selected') && <Payment />}
+      {state.matches('payment_selected') && (
+        <Payment shippingState={shippingState.context} shippingSend={shippingSend} appSend={send} />
+      )}
+      {state.matches('completed') && <p>completed</p>}
     </div>
   );
 };
