@@ -1,39 +1,26 @@
 import { ActorRefFrom, createMachine, assign, stopChild } from 'xstate';
 import { itemMachine } from '@/app/machine/itemMachine';
 
+export type ItemsContext = {
+  newItemName: string;
+  newItemPrice: string;
+  newItemShipping: boolean;
+  items: ActorRefFrom<typeof itemMachine>[];
+};
+
+export type ItemsEvent =
+  | { type: 'ITEMS.ADD'; name: string; price: string; shipping: boolean }
+  | { type: 'NEW_ITEM.CHANGE_NAME'; name: string }
+  | { type: 'NEW_ITEM.CHANGE_PRICE'; price: string }
+  | { type: 'NEW_ITEM.CHANGE_SHIPPING'; shipping: boolean }
+  | { type: 'ITEM.REMOVE'; index: number };
+
 const makeId = () => Math.random().toString(36).substring(7);
 
 export const itemsMachine = createMachine({
   types: {} as {
-    context: {
-      newItemName: string;
-      newItemPrice: string;
-      newItemShipping: boolean;
-      items: ActorRefFrom<typeof itemMachine>[];
-    };
-    events:
-      | {
-          type: 'ITEMS.ADD';
-          name: string;
-          price: string;
-          shipping: boolean;
-        }
-      | {
-          type: 'NEW_ITEM.CHANGE_NAME';
-          name: string;
-        }
-      | {
-          type: 'NEW_ITEM.CHANGE_PRICE';
-          price: string;
-        }
-      | {
-          type: 'NEW_ITEM.CHANGE_SHIPPING';
-          shipping: boolean;
-        }
-      | {
-          type: 'ITEM.REMOVE';
-          index: number;
-        };
+    context: ItemsContext;
+    events: ItemsEvent;
   },
   id: 'items',
   context: {

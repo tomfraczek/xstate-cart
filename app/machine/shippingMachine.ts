@@ -34,7 +34,6 @@ export const shippingMachine = setup({
   types: {
     context: {} as ContextType,
     events: {} as EventType,
-    input: {} as ContextType,
   },
   actors: {
     saveUser: fromPromise(async () => {

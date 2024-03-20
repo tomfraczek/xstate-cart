@@ -1,14 +1,14 @@
 'use client';
-import { CartItem } from '@/app/components/cartItem';
+import { useEffect } from 'react';
 import { itemsMachine } from '@/app/machine/itemsMachine';
 import { useMachine } from '@xstate/react';
 import { appMachine } from '@/app/machine/appMachine';
 import { CartForm } from '@/app/components/cartForm';
 import { AddressForm } from '@/app/components/addressForm';
 import { shippingMachine } from '@/app/machine/shippingMachine';
-import { useEffect } from 'react';
 import { Shipping } from '@/app/components/shipping';
 import { Payment } from '@/app/components/payment';
+import { Completed } from '@/app/components/completed';
 
 export const Start = () => {
   const [state, send] = useMachine(appMachine);
@@ -31,7 +31,9 @@ export const Start = () => {
       {state.matches('payment_selected') && (
         <Payment shippingState={shippingState.context} shippingSend={shippingSend} appSend={send} />
       )}
-      {state.matches('completed') && <p>completed</p>}
+      {state.matches('completed') && (
+        <Completed itemsState={itemsState.context} shippingState={shippingState.context} appSend={send} />
+      )}
     </div>
   );
 };
